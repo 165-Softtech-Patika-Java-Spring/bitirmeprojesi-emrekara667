@@ -1,4 +1,4 @@
-package com.emrekara.finalproject.app.ProductInfo.entity;
+package com.emrekara.finalproject.app.productInfo.entity;
 
 
 import com.emrekara.finalproject.app.gen.entity.BaseEntity;
@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Entity
 @Table(name = "PR_PRODUCT_INFO")
@@ -17,7 +16,7 @@ import java.util.Date;
 public class PrProductInfo extends BaseEntity {
 
     @Id
-    @SequenceGenerator(name = "PrProductInfo" , sequenceName = "PR_PRODUCT _ID_SEQ")
+    @SequenceGenerator(name = "PrProductInfo" , sequenceName = "PR_PRODUCT_ID_SEQ")
     @GeneratedValue(generator = "PrProductInfo")
     private Long id;
 
