@@ -21,10 +21,10 @@ public class PrProductInfo extends BaseEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "PRODUCT_TYPE", length = 30)
+    @Column(name = "PRODUCT_TYPE", length = 30, nullable = false)
     private ProductType productType;
 
-    @Column(name = "VAT_RATE", precision = 19, scale = 2)
+    @Column(name = "VAT_RATE", precision = 19, scale = 2, nullable = false)
     private BigDecimal  vatRate;
 
 }
