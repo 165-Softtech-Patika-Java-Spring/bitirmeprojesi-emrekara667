@@ -4,10 +4,10 @@ import com.emrekara.finalproject.app.gen.dto.RestResponse;
 import com.emrekara.finalproject.app.user.dto.UsUserDto;
 import com.emrekara.finalproject.app.user.dto.UsUserSaveRequestDto;
 import com.emrekara.finalproject.app.user.service.UsUserService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
