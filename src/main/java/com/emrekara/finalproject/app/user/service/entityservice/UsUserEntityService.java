@@ -10,4 +10,10 @@ public class UsUserEntityService extends BaseEntityService<UsUser, UsUserDao> {
     public UsUserEntityService(UsUserDao dao) {
         super(dao);
     }
+
+    public boolean existsUsUserByUserName(String userName){
+        return getDao().existsUsUserByUserName(userName);
+    }
+
+
 }
