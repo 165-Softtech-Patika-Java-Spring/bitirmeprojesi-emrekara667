@@ -1,4 +1,4 @@
-package com.emrekara.finalproject.app.user;
+package com.emrekara.finalproject.app.user.entity;
 
 import com.emrekara.finalproject.app.gen.entity.BaseEntity;
 import lombok.Getter;
