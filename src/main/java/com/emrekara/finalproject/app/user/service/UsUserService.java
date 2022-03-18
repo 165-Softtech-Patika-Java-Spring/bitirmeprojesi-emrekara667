@@ -58,4 +58,10 @@ public class UsUserService {
         }
 
     }
+
+    public void delete(Long id) {
+       UsUser usUser = usUserEntityService.getByIdWithControl(id);
+
+       usUserEntityService.delete(usUser);
+    }
 }

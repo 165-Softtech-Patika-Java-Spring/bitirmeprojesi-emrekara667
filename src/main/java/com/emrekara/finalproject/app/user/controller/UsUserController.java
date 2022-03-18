@@ -35,4 +35,12 @@ public class UsUserController {
 
         return ResponseEntity.ok(RestResponse.of(usUserDto));
     }
+
+    @Operation(tags = "User Controller", description = "Delete user", summary = "Delete user")
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable Long id){
+        usUserService.delete(id);
+
+        return ResponseEntity.ok(RestResponse.empty());
+    }
 }
