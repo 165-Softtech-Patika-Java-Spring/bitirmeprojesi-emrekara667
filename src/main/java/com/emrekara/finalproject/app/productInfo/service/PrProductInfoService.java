@@ -25,8 +25,13 @@ public class PrProductInfoService {
         BigDecimal vatRate = prProductInfo.getVatRate();
         validateVatRate(vatRate);
 
-        prProductInfo = prProductInfoEntityService.save(prProductInfo);
+        boolean isExist = prProductInfoEntityService.existsPrProductInfoByProductType(prProductInfo.getProductType());
 
+        if(!isExist){
+            prProductInfo = prProductInfoEntityService.save(prProductInfo);
+        }else{
+            throw new GenBusinessException(PrProductErrorMessage.PRODUCT_TYPE_ALREADY_EXIST_ERROR);
+        }
         PrProductInfoDto prProductInfoDto = PrProductInfoMapper.INSTANCE.convertToPrProductInfoDto(prProductInfo);
 
         return prProductInfoDto;
