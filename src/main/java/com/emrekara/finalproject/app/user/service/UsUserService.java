@@ -4,6 +4,7 @@ import com.emrekara.finalproject.app.gen.exceptions.GenBusinessException;
 import com.emrekara.finalproject.app.gen.exceptions.ItemNotFoundException;
 import com.emrekara.finalproject.app.user.converter.UsUserMapper;
 import com.emrekara.finalproject.app.user.dto.UsUserDto;
+import com.emrekara.finalproject.app.user.dto.UsUserResponseDto;
 import com.emrekara.finalproject.app.user.dto.UsUserSaveRequestDto;
 import com.emrekara.finalproject.app.user.dto.UsUserUpdateRequestDto;
 import com.emrekara.finalproject.app.user.entity.UsUser;
@@ -11,6 +12,8 @@ import com.emrekara.finalproject.app.user.enums.UsrErrorMessage;
 import com.emrekara.finalproject.app.user.service.entityservice.UsUserEntityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -63,5 +66,14 @@ public class UsUserService {
        UsUser usUser = usUserEntityService.getByIdWithControl(id);
 
        usUserEntityService.delete(usUser);
+    }
+
+    public List<UsUserResponseDto> findAll() {
+
+        List<UsUser> usUserList = usUserEntityService.findAll();
+
+        List<UsUserResponseDto> usUserResponseDtoList = UsUserMapper.INSTANCE.convertToUsUserResponseDtoList(usUserList);
+
+        return usUserResponseDtoList;
     }
 }

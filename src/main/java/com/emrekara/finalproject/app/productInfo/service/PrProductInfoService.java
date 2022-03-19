@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -41,5 +42,14 @@ public class PrProductInfoService {
         if(vatRate.compareTo(BigDecimal.ZERO) < 0){
             throw new GenBusinessException(PrProductErrorMessage.NEGATIVE_VAT_RATE_ERROR);
         }
+    }
+
+    public List<PrProductInfoDto> findAll() {
+        List<PrProductInfo> prProductInfoList = prProductInfoEntityService.findAll();
+
+        List<PrProductInfoDto> prProductInfoDtoList = PrProductInfoMapper.INSTANCE.
+                convertToPrProductInfoDtoList(prProductInfoList);
+
+        return prProductInfoDtoList;
     }
 }

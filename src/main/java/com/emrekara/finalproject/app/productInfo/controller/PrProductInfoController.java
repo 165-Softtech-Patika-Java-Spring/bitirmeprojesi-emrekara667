@@ -7,10 +7,9 @@ import com.emrekara.finalproject.app.productInfo.service.PrProductInfoService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/productInfo")
@@ -28,6 +27,14 @@ public class PrProductInfoController {
         PrProductInfoDto prProductInfoDto = prProductInfoService.save(prProductInfoSaveRequestDto);
 
         return ResponseEntity.ok(RestResponse.of(prProductInfoDto));
+    }
+
+    @Operation(tags = "ProductInfo Controller", description = "Find all ProductInfo", summary = "Find all ProductInfo")
+    @GetMapping
+    public ResponseEntity findAll(){
+        List<PrProductInfoDto> prProductInfoDtoList =  prProductInfoService.findAll();
+
+        return ResponseEntity.ok(RestResponse.of(prProductInfoDtoList));
     }
 
 }

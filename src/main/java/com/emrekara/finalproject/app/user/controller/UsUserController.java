@@ -2,6 +2,7 @@ package com.emrekara.finalproject.app.user.controller;
 
 import com.emrekara.finalproject.app.gen.dto.RestResponse;
 import com.emrekara.finalproject.app.user.dto.UsUserDto;
+import com.emrekara.finalproject.app.user.dto.UsUserResponseDto;
 import com.emrekara.finalproject.app.user.dto.UsUserSaveRequestDto;
 import com.emrekara.finalproject.app.user.dto.UsUserUpdateRequestDto;
 import com.emrekara.finalproject.app.user.service.UsUserService;
@@ -9,6 +10,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -42,5 +45,13 @@ public class UsUserController {
         usUserService.delete(id);
 
         return ResponseEntity.ok(RestResponse.empty());
+    }
+
+    @Operation(tags = "User Controller", description = "Find all user", summary = "Find all user")
+    @GetMapping
+    public ResponseEntity findAll(){
+        List<UsUserResponseDto> usUserResponseDtoList =  usUserService.findAll();
+
+        return ResponseEntity.ok(RestResponse.of(usUserResponseDtoList));
     }
 }
