@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface PrProductInfoDao extends JpaRepository<PrProductInfo, Long> {
 
     boolean existsPrProductInfoByProductType(ProductType productType);
+
+    PrProductInfo findByProductType(ProductType productType);
 }

@@ -16,4 +16,8 @@ public class PrProductInfoEntityService extends BaseEntityService<PrProductInfo,
     public boolean existsPrProductInfoByProductType(ProductType productType){
         return getDao().existsPrProductInfoByProductType(productType);
     }
+
+    public PrProductInfo findByProductType(ProductType productType){
+        return getDao().findByProductType(productType);
+    }
 }
