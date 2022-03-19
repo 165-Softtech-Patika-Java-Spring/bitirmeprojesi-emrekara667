@@ -9,10 +9,10 @@ import java.math.BigDecimal;
 @Data
 public class PrProductSaveRequestDto {
 
-    @NotNull
+
     private String productName;
-    @NotNull
+
     private ProductType productType;
-    @NotNull
+
     private BigDecimal vatFreePrice;
 }
