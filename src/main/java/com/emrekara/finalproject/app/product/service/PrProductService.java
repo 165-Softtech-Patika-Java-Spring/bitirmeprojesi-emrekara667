@@ -2,9 +2,12 @@ package com.emrekara.finalproject.app.product.service;
 
 import com.emrekara.finalproject.app.gen.enums.ProductType;
 import com.emrekara.finalproject.app.gen.exceptions.GenBusinessException;
+import com.emrekara.finalproject.app.gen.exceptions.ItemNotFoundException;
 import com.emrekara.finalproject.app.product.converter.PrProductMapper;
 import com.emrekara.finalproject.app.product.dto.PrProductDto;
 import com.emrekara.finalproject.app.product.dto.PrProductSaveRequestDto;
+import com.emrekara.finalproject.app.product.dto.PrProductUpdateRequestDto;
+import com.emrekara.finalproject.app.product.dto.PrProductValidatedParameters;
 import com.emrekara.finalproject.app.product.entity.PrProduct;
 import com.emrekara.finalproject.app.product.enums.ProductErrorMessage;
 import com.emrekara.finalproject.app.product.service.entityservice.PrProductEntityService;
@@ -24,6 +27,17 @@ public class PrProductService {
 
     public PrProductDto save(PrProductSaveRequestDto prProductSaveRequestDto) {
 
+        PrProduct prProduct = createSavePrProduct(prProductSaveRequestDto);
+
+        prProduct = prProductEntityService.save(prProduct);
+
+        PrProductDto prProductDto = PrProductMapper.INSTANCE.convertToPrProductDto(prProduct);
+
+        return prProductDto;
+    }
+
+    private PrProductValidatedParameters validatedParameters(PrProductSaveRequestDto prProductSaveRequestDto){
+
         String productName = prProductSaveRequestDto.getProductName();
         validateProductAttribute(productName.isEmpty(), ProductErrorMessage.PRODUCT_NAME_EMPTY_ERROR);
 
@@ -34,26 +48,13 @@ public class PrProductService {
         validateProductAttribute(vatFreePrice == null, ProductErrorMessage.PRODUCT_PRICE_NULL_ERROR);
         validateProductAttribute(vatFreePrice.compareTo(BigDecimal.ZERO) <= 0, ProductErrorMessage.PRODUCT_PRICE_NEGATIVE_ERROR);
 
+        PrProductValidatedParameters validatedParameters = new PrProductValidatedParameters();
 
-        PrProductInfo prProductInfo = prProductInfoEntityService.findByProductType(productType);
-        BigDecimal vatRate = prProductInfo.getVatRate();
-        Long prProductInfoId = prProductInfo.getId();
+        validatedParameters.setProductName(productName);
+        validatedParameters.setProductType(productType);
+        validatedParameters.setVatFreePrice(vatFreePrice);
 
-        BigDecimal vatPrice = calculateVatPrice(vatFreePrice, vatRate);
-        BigDecimal finalPrice = calculateFinalPrice(vatFreePrice, vatPrice);
-
-        PrProduct prProduct = new PrProduct();
-        prProduct.setProductName(productName);
-        prProduct.setProductType(productType);
-        prProduct.setVatFreePrice(vatFreePrice);
-        prProduct.setProductInfoId(prProductInfoId);
-        prProduct.setFinalPrice(finalPrice);
-        prProduct.setVatPrice(vatPrice);
-        prProduct = prProductEntityService.save(prProduct);
-
-        PrProductDto prProductDto = PrProductMapper.INSTANCE.convertToPrProductDto(prProduct);
-
-        return prProductDto;
+        return validatedParameters;
     }
 
     private void validateProductAttribute(boolean productAttribute, ProductErrorMessage productNameEmptyError) {
@@ -72,5 +73,53 @@ public class PrProductService {
         BigDecimal dividedVatRate = vatRate.divide(BigDecimal.valueOf(100));
 
         return vatFreePrice.multiply(dividedVatRate);
+    }
+
+    public PrProductDto update(PrProductUpdateRequestDto prProductUpdateRequestDto) {
+        controlIsProductExist(prProductUpdateRequestDto);
+
+        PrProductSaveRequestDto dto = PrProductMapper.INSTANCE.convertToPrProductSaveRequestDto(prProductUpdateRequestDto);
+        PrProduct prProduct = createSavePrProduct(dto);
+        prProduct.setId(prProductUpdateRequestDto.getId());
+        prProduct = prProductEntityService.save(prProduct);
+
+        PrProductDto prProductDto = PrProductMapper.INSTANCE.convertToPrProductDto(prProduct);
+
+        return prProductDto;
+    }
+
+    private PrProduct createSavePrProduct(PrProductSaveRequestDto dto) {
+        PrProductValidatedParameters validatedParameters = validatedParameters(dto);
+
+        BigDecimal vatFreePrice = validatedParameters.getVatFreePrice();
+        ProductType productType = validatedParameters.getProductType();
+        String productName = validatedParameters.getProductName();
+
+        PrProductInfo prProductInfo = prProductInfoEntityService.findByProductType(productType);
+        BigDecimal vatRate = prProductInfo.getVatRate();
+        Long prProductInfoId = prProductInfo.getId();
+
+        BigDecimal vatPrice = calculateVatPrice(vatFreePrice, vatRate);
+        BigDecimal finalPrice = calculateFinalPrice(vatFreePrice, vatPrice);
+
+        PrProduct prProduct = new PrProduct();
+        prProduct.setProductName(productName);
+        prProduct.setProductType(productType);
+        prProduct.setVatFreePrice(vatFreePrice);
+        prProduct.setProductInfoId(prProductInfoId);
+        prProduct.setFinalPrice(finalPrice);
+        prProduct.setVatPrice(vatPrice);
+
+        return prProduct;
+    }
+
+
+    private void controlIsProductExist(PrProductUpdateRequestDto prProductUpdateRequestDto){
+
+        Long id = prProductUpdateRequestDto.getId();
+        boolean existsById = prProductEntityService.existsById(id);
+        if(!existsById){
+            throw new ItemNotFoundException(ProductErrorMessage.PRODUCT_NOT_FOUND_ERROR);
+        }
     }
 }

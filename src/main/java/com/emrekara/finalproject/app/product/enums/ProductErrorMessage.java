@@ -8,6 +8,7 @@ public enum ProductErrorMessage implements BaseErrorMessage {
     PRODUCT_TYPE_EMPTY_ERROR("Product TYPE empty error!"),
     PRODUCT_PRICE_NEGATIVE_ERROR("Product PRICE NEGATIVE error!"),
     PRODUCT_PRICE_NULL_ERROR("Product PRICE NULL error!"),
+    PRODUCT_NOT_FOUND_ERROR("Product NOT FOUND error!"),
     ;
 
     private String message;
