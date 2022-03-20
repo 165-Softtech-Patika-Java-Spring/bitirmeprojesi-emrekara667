@@ -170,4 +170,21 @@ public class PrProductService {
 
         return prProductDtoList;
     }
+
+    public List<PrProductDto> findAllByProduct(ProductType productType) {
+        List<PrProduct> prProductList = prProductEntityService.findAllByProductType(productType);
+
+        List<PrProductDto> prProductDtoList = PrProductMapper.INSTANCE.convertToProductDtoList(prProductList);
+
+        return prProductDtoList;
+    }
+
+    public List<PrProductDto> findAllByFinalPriceBetween(BigDecimal minimum, BigDecimal maximum) {
+
+        List<PrProduct> prProductList = prProductEntityService.findAllByFinalPriceBetween(minimum, maximum);
+
+        List<PrProductDto> prProductDtoList = PrProductMapper.INSTANCE.convertToProductDtoList(prProductList);
+
+        return prProductDtoList;
+    }
 }

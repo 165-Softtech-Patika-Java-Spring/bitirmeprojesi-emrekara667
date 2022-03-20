@@ -1,6 +1,7 @@
 package com.emrekara.finalproject.app.product.controller;
 
 import com.emrekara.finalproject.app.gen.dto.RestResponse;
+import com.emrekara.finalproject.app.gen.enums.ProductType;
 import com.emrekara.finalproject.app.product.dto.PrProductDto;
 import com.emrekara.finalproject.app.product.dto.PrProductSaveRequestDto;
 import com.emrekara.finalproject.app.product.dto.PrProductUpdatePriceDto;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -69,6 +71,26 @@ public class PrProductController {
 
         return ResponseEntity.ok(RestResponse.of(prProductDtoList));
     }
+
+    @Operation(tags = "Product Controller", description = "Show all by productType", summary = "Show all by productType")
+    @GetMapping("/{productType}")
+    public ResponseEntity findAll(@PathVariable ProductType productType){
+        List<PrProductDto> prProductDtoList = prProductService.findAllByProduct(productType);
+
+        return ResponseEntity.ok(RestResponse.of(prProductDtoList));
+    }
+
+
+    @Operation(tags = "Product Controller", description = "Show all product by price", summary = "Show all product by price")
+    @GetMapping("/List-product-by-price")
+    public ResponseEntity findProductByPriceBetween(@RequestParam BigDecimal minimum,
+                                                    @RequestParam BigDecimal maximum){
+        List<PrProductDto> productDtoList = prProductService.findAllByFinalPriceBetween(minimum, maximum);
+
+        return ResponseEntity.ok(RestResponse.of(productDtoList));
+    }
+
+
 
 
 
