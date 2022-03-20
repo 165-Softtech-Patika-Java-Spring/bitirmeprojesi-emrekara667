@@ -8,6 +8,7 @@ public enum ProductType {
     TECHNOLOGY,
     CLEANING,
     OTHER,
+    DUMMY,
     ;
 
 }
