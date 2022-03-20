@@ -36,6 +36,18 @@ public class PrProductController {
         return ResponseEntity.ok(RestResponse.of(prProductDto));
     }
 
+    @Operation(tags = "Product Controller", description = "Delete product", summary = "Delete product")
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable Long id){
+
+        prProductService.delete(id);
+
+        RestResponse<Object> empty = RestResponse.empty();
+        empty.setMessages(id + " : entity deleted");
+
+        return ResponseEntity.ok(empty);
+    }
+
 
 
 

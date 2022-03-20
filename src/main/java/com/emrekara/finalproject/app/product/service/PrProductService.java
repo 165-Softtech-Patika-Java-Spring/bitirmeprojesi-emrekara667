@@ -122,4 +122,11 @@ public class PrProductService {
             throw new ItemNotFoundException(ProductErrorMessage.PRODUCT_NOT_FOUND_ERROR);
         }
     }
+
+    public void delete(Long id) {
+
+        PrProduct prProduct = prProductEntityService.getByIdWithControl(id);
+
+        prProductEntityService.delete(prProduct);
+    }
 }
