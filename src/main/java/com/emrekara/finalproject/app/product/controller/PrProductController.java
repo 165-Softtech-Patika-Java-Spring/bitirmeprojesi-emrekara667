@@ -3,7 +3,9 @@ package com.emrekara.finalproject.app.product.controller;
 import com.emrekara.finalproject.app.gen.dto.RestResponse;
 import com.emrekara.finalproject.app.product.dto.PrProductDto;
 import com.emrekara.finalproject.app.product.dto.PrProductSaveRequestDto;
+import com.emrekara.finalproject.app.product.dto.PrProductUpdatePriceDto;
 import com.emrekara.finalproject.app.product.dto.PrProductUpdateRequestDto;
+import com.emrekara.finalproject.app.product.entity.PrProduct;
 import com.emrekara.finalproject.app.product.service.PrProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +49,18 @@ public class PrProductController {
 
         return ResponseEntity.ok(empty);
     }
+
+
+    @Operation(tags = "Product Controller", description = "Update product price", summary = "Update product price")
+    @PutMapping("/update-price")
+    public ResponseEntity updatePrice(@RequestBody PrProductUpdatePriceDto prProductUpdatePriceDto){
+
+        PrProductDto prProductDto = prProductService.updatePrice(prProductUpdatePriceDto);
+
+        return ResponseEntity.ok(RestResponse.of(prProductDto));
+    }
+
+
 
 
 

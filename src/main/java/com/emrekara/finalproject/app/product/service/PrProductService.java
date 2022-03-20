@@ -2,12 +2,8 @@ package com.emrekara.finalproject.app.product.service;
 
 import com.emrekara.finalproject.app.gen.enums.ProductType;
 import com.emrekara.finalproject.app.gen.exceptions.GenBusinessException;
-import com.emrekara.finalproject.app.gen.exceptions.ItemNotFoundException;
 import com.emrekara.finalproject.app.product.converter.PrProductMapper;
-import com.emrekara.finalproject.app.product.dto.PrProductDto;
-import com.emrekara.finalproject.app.product.dto.PrProductSaveRequestDto;
-import com.emrekara.finalproject.app.product.dto.PrProductUpdateRequestDto;
-import com.emrekara.finalproject.app.product.dto.PrProductValidatedParameters;
+import com.emrekara.finalproject.app.product.dto.*;
 import com.emrekara.finalproject.app.product.entity.PrProduct;
 import com.emrekara.finalproject.app.product.enums.ProductErrorMessage;
 import com.emrekara.finalproject.app.product.service.entityservice.PrProductEntityService;
@@ -45,8 +41,7 @@ public class PrProductService {
         validateProductAttribute(productType == null, ProductErrorMessage.PRODUCT_TYPE_EMPTY_ERROR);
 
         BigDecimal vatFreePrice = prProductSaveRequestDto.getVatFreePrice();
-        validateProductAttribute(vatFreePrice == null, ProductErrorMessage.PRODUCT_PRICE_NULL_ERROR);
-        validateProductAttribute(vatFreePrice.compareTo(BigDecimal.ZERO) <= 0, ProductErrorMessage.PRODUCT_PRICE_NEGATIVE_ERROR);
+        validateVatFreePrice(vatFreePrice);
 
         PrProductValidatedParameters validatedParameters = new PrProductValidatedParameters();
 
@@ -76,7 +71,7 @@ public class PrProductService {
     }
 
     public PrProductDto update(PrProductUpdateRequestDto prProductUpdateRequestDto) {
-        controlIsProductExist(prProductUpdateRequestDto);
+        controlIsProductExist(prProductUpdateRequestDto.getId());
 
         PrProductSaveRequestDto dto = PrProductMapper.INSTANCE.convertToPrProductSaveRequestDto(prProductUpdateRequestDto);
         PrProduct prProduct = createSavePrProduct(dto);
@@ -97,6 +92,7 @@ public class PrProductService {
 
         PrProductInfo prProductInfo = prProductInfoEntityService.findByProductType(productType);
         BigDecimal vatRate = prProductInfo.getVatRate();
+
         Long prProductInfoId = prProductInfo.getId();
 
         BigDecimal vatPrice = calculateVatPrice(vatFreePrice, vatRate);
@@ -114,13 +110,11 @@ public class PrProductService {
     }
 
 
-    private void controlIsProductExist(PrProductUpdateRequestDto prProductUpdateRequestDto){
+    private void controlIsProductExist(Long id){
 
-        Long id = prProductUpdateRequestDto.getId();
         boolean existsById = prProductEntityService.existsById(id);
-        if(!existsById){
-            throw new ItemNotFoundException(ProductErrorMessage.PRODUCT_NOT_FOUND_ERROR);
-        }
+
+        validateProductAttribute(!existsById, ProductErrorMessage.PRODUCT_NOT_FOUND_ERROR);
     }
 
     public void delete(Long id) {
@@ -128,5 +122,43 @@ public class PrProductService {
         PrProduct prProduct = prProductEntityService.getByIdWithControl(id);
 
         prProductEntityService.delete(prProduct);
+    }
+
+    public PrProductDto updatePrice(PrProductUpdatePriceDto prProductUpdatePriceDto) {
+
+        Long id = prProductUpdatePriceDto.getId();
+
+        controlIsProductExist(id);
+
+        PrProduct prProduct = prProductEntityService.getByIdWithControl(id);
+
+        BigDecimal vatRate = getVatRateFunc(prProduct.getProductType());
+
+        BigDecimal vatFreePrice = prProductUpdatePriceDto.getVatFreePrice();
+        validateVatFreePrice(vatFreePrice);
+
+        BigDecimal vatPrice = calculateVatPrice(vatFreePrice, vatRate);
+        BigDecimal finalPrice = calculateFinalPrice(vatFreePrice, vatPrice);
+
+        prProduct.setVatPrice(vatPrice);
+        prProduct.setFinalPrice(finalPrice);
+
+        prProductEntityService.save(prProduct);
+
+        PrProductDto prProductDto = PrProductMapper.INSTANCE.convertToPrProductDto(prProduct);
+
+        return prProductDto;
+    }
+
+    private BigDecimal getVatRateFunc(ProductType prProduct) {
+        PrProductInfo productInfo = prProductInfoEntityService.findByProductType(prProduct);
+        BigDecimal vatRate = productInfo.getVatRate();
+        return vatRate;
+    }
+
+    private void validateVatFreePrice(BigDecimal vatFreePrice){
+
+        validateProductAttribute(vatFreePrice == null, ProductErrorMessage.PRODUCT_PRICE_NULL_ERROR);
+        validateProductAttribute(vatFreePrice.compareTo(BigDecimal.ZERO) <= 0, ProductErrorMessage.PRODUCT_PRICE_NEGATIVE_ERROR);
     }
 }
