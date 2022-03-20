@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -42,7 +43,6 @@ public class PrProductService {
 
         BigDecimal vatFreePrice = prProductSaveRequestDto.getVatFreePrice();
         validateVatFreePrice(vatFreePrice);
-
         PrProductValidatedParameters validatedParameters = new PrProductValidatedParameters();
 
         validatedParameters.setProductName(productName);
@@ -160,5 +160,14 @@ public class PrProductService {
 
         validateProductAttribute(vatFreePrice == null, ProductErrorMessage.PRODUCT_PRICE_NULL_ERROR);
         validateProductAttribute(vatFreePrice.compareTo(BigDecimal.ZERO) <= 0, ProductErrorMessage.PRODUCT_PRICE_NEGATIVE_ERROR);
+    }
+
+    public List<PrProductDto> findAll() {
+
+        List<PrProduct> prProductList = prProductEntityService.findAll();
+
+        List<PrProductDto> prProductDtoList = PrProductMapper.INSTANCE.convertToProductDtoList(prProductList);
+
+        return prProductDtoList;
     }
 }

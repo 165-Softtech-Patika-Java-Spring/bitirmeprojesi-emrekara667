@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
@@ -58,6 +60,14 @@ public class PrProductController {
         PrProductDto prProductDto = prProductService.updatePrice(prProductUpdatePriceDto);
 
         return ResponseEntity.ok(RestResponse.of(prProductDto));
+    }
+
+    @Operation(tags = "Product Controller", description = "Show all product", summary = "Show all product")
+    @GetMapping
+    public ResponseEntity findAll(){
+        List<PrProductDto> prProductDtoList = prProductService.findAll();
+
+        return ResponseEntity.ok(RestResponse.of(prProductDtoList));
     }
 
 

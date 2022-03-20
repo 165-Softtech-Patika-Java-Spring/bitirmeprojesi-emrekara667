@@ -8,6 +8,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PrProductMapper {
 
@@ -16,4 +18,6 @@ public interface PrProductMapper {
     PrProductDto convertToPrProductDto(PrProduct prProduct);
 
     PrProductSaveRequestDto convertToPrProductSaveRequestDto(PrProductUpdateRequestDto prProductUpdateRequestDto);
+
+    List<PrProductDto> convertToProductDtoList(List<PrProduct> prProductList);
 }
