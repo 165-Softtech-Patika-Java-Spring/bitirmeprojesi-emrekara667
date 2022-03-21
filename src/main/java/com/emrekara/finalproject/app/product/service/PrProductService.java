@@ -193,19 +193,9 @@ public class PrProductService {
 
     public PrProductDetailsDto findProductDetails(ProductType productType) {
 
-        BigDecimal minPrice = prProductEntityService.findMinPrice(productType);
-        BigDecimal maxPrice = prProductEntityService.findMaxPrice(productType);
-        BigDecimal avgPrice = prProductEntityService.findAvgPrice(productType);
-        BigDecimal count = prProductEntityService.findCount(productType);
+        PrProductDetails productDetails = prProductEntityService.getProductDetails(productType);
 
-
-
-        PrProductDetailsDto prProductDetailsDto = new PrProductDetailsDto();
-        prProductDetailsDto.setMinimum(minPrice);
-        prProductDetailsDto.setAverage(avgPrice);
-        prProductDetailsDto.setMaximum(maxPrice);
-        prProductDetailsDto.setCount(count);
-
+        PrProductDetailsDto prProductDetailsDto = PrProductMapper.INSTANCE.convertToPrProductDetailsDto(productDetails);
 
         return prProductDetailsDto;
     }

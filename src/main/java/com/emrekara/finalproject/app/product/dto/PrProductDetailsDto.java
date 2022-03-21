@@ -9,6 +9,6 @@ public class PrProductDetailsDto {
 
     private BigDecimal minimum;
     private BigDecimal maximum;
-    private BigDecimal average;
-    private BigDecimal count;
+    private Double average;
+    private Long count;
 }

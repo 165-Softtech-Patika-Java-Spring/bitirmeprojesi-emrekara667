@@ -1,9 +1,6 @@
 package com.emrekara.finalproject.app.product.converter;
 
-import com.emrekara.finalproject.app.product.dto.PrProductDto;
-import com.emrekara.finalproject.app.product.dto.PrProductSaveRequestDto;
-import com.emrekara.finalproject.app.product.dto.PrProductUpdatePriceDto;
-import com.emrekara.finalproject.app.product.dto.PrProductUpdateRequestDto;
+import com.emrekara.finalproject.app.product.dto.*;
 import com.emrekara.finalproject.app.product.entity.PrProduct;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -23,4 +20,6 @@ public interface PrProductMapper {
     List<PrProductDto> convertToProductDtoList(List<PrProduct> prProductList);
 
     List<PrProductUpdatePriceDto> convertToPrProductUpdatePriceDtoList(List<PrProductDto> productDtoList);
+
+    PrProductDetailsDto convertToPrProductDetailsDto(PrProductDetails prProductDetails);
 }

@@ -97,18 +97,4 @@ public class PrProductController {
         return ResponseEntity.ok(RestResponse.of(prProductDetailsDto));
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

@@ -3,6 +3,7 @@ package com.emrekara.finalproject.app.product.service.entityservice;
 import com.emrekara.finalproject.app.gen.enums.ProductType;
 import com.emrekara.finalproject.app.gen.service.BaseEntityService;
 import com.emrekara.finalproject.app.product.dao.PrProductDao;
+import com.emrekara.finalproject.app.product.dto.PrProductDetails;
 import com.emrekara.finalproject.app.product.entity.PrProduct;
 import org.springframework.stereotype.Service;
 
@@ -38,5 +39,9 @@ public class PrProductEntityService extends BaseEntityService<PrProduct, PrProdu
 
     public BigDecimal findCount(ProductType productType){
         return getDao().findCount(productType);
+    }
+
+    public PrProductDetails getProductDetails(ProductType productType){
+        return getDao().getProductDetails(productType);
     }
 }

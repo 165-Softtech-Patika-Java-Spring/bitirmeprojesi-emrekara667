@@ -1,6 +1,8 @@
 package com.emrekara.finalproject.app.product.dao;
 
 import com.emrekara.finalproject.app.gen.enums.ProductType;
+import com.emrekara.finalproject.app.product.dto.PrProductDetails;
+import com.emrekara.finalproject.app.product.dto.PrProductDetailsDto;
 import com.emrekara.finalproject.app.product.entity.PrProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -27,6 +29,17 @@ public interface PrProductDao extends JpaRepository<PrProduct, Long> {
 
     @Query(" select count(prProduct) from PrProduct prProduct where prProduct.productType = :productType ")
     BigDecimal findCount(ProductType productType);
+
+
+    @Query(" select " +
+            " new com.emrekara.finalproject.app.product.dto.PrProductDetails( " +
+            " min(prProduct.finalPrice), " +
+            " max(prProduct.finalPrice), " +
+            " avg(prProduct.finalPrice) , " +
+            " count(prProduct) " +
+            " ) " +
+            " from PrProduct prProduct where prProduct.productType = :productType ")
+    PrProductDetails getProductDetails(ProductType productType);
 
 
 }
