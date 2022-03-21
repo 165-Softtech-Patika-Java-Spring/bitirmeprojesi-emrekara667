@@ -3,6 +3,7 @@ package com.emrekara.finalproject.app.productInfo.controller;
 import com.emrekara.finalproject.app.gen.dto.RestResponse;
 import com.emrekara.finalproject.app.productInfo.dto.PrProductInfoDto;
 import com.emrekara.finalproject.app.productInfo.dto.PrProductInfoSaveRequestDto;
+import com.emrekara.finalproject.app.productInfo.dto.PrProductInfoUpdateRequestDto;
 import com.emrekara.finalproject.app.productInfo.service.PrProductInfoService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -36,5 +37,20 @@ public class PrProductInfoController {
 
         return ResponseEntity.ok(RestResponse.of(prProductInfoDtoList));
     }
+
+    @Operation(tags = "ProductInfo Controller", description = "Update vatRate", summary = "Update vatRate")
+    @PostMapping("/update-vatRate")
+    public ResponseEntity updateVatRate(@RequestBody PrProductInfoUpdateRequestDto prProductInfoUpdateRequestDto){
+        PrProductInfoDto prProductInfoDto = prProductInfoService.updateVatRate(prProductInfoUpdateRequestDto);
+
+        RestResponse<PrProductInfoDto> response = RestResponse.of(prProductInfoDto);
+        response.setMessages("VatRate updated");
+
+        return ResponseEntity.ok(response);
+    }
+
+
+
+
 
 }

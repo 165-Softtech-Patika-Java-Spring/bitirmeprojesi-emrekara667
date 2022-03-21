@@ -6,6 +6,7 @@ public enum PrProductInfoErrorMessage implements BaseErrorMessage {
 
     NEGATIVE_VAT_RATE_ERROR("Negative vat rate error"),
     PRODUCT_TYPE_ALREADY_EXIST_ERROR("Product type already exist!"),
+    PRODUCT_TYPE_NOT_FOUND_ERROR("Product type not found!"),
     ;
 
     private String message;
