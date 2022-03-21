@@ -1,5 +1,6 @@
 package com.emrekara.finalproject.app.product.service;
 
+import com.emrekara.finalproject.app.gen.enums.GenErrorMessage;
 import com.emrekara.finalproject.app.gen.enums.ProductType;
 import com.emrekara.finalproject.app.gen.exceptions.GenBusinessException;
 import com.emrekara.finalproject.app.product.converter.PrProductMapper;
@@ -193,10 +194,27 @@ public class PrProductService {
 
     public PrProductDetailsDto findProductDetails(ProductType productType) {
 
+       validateProductInfoType(productType);
+
         PrProductDetails productDetails = prProductEntityService.getProductDetails(productType);
+
+        PrProductInfo prProductInfo = prProductInfoEntityService.findByProductType(productType);
+
+        productDetails.setProductType(prProductInfo.getProductType());
+        productDetails.setVatRate(prProductInfo.getVatRate());
 
         PrProductDetailsDto prProductDetailsDto = PrProductMapper.INSTANCE.convertToPrProductDetailsDto(productDetails);
 
         return prProductDetailsDto;
+    }
+
+    private void validateProductInfoType(ProductType productType) {
+
+        boolean exist = prProductInfoEntityService.existsPrProductInfoByProductType(productType);
+
+        if(!exist){
+            throw new GenBusinessException(GenErrorMessage.ITEM_NOT_FOUND);
+        }
+
     }
 }

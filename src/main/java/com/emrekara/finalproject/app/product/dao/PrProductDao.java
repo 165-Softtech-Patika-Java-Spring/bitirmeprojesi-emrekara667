@@ -30,7 +30,6 @@ public interface PrProductDao extends JpaRepository<PrProduct, Long> {
     @Query(" select count(prProduct) from PrProduct prProduct where prProduct.productType = :productType ")
     BigDecimal findCount(ProductType productType);
 
-
     @Query(" select " +
             " new com.emrekara.finalproject.app.product.dto.PrProductDetails( " +
             " min(prProduct.finalPrice), " +
@@ -42,4 +41,26 @@ public interface PrProductDao extends JpaRepository<PrProduct, Long> {
     PrProductDetails getProductDetails(ProductType productType);
 
 
+
+
+
 }
+
+
+/*
+
+
+
+      @Query(" select " +
+            " new com.emrekara.finalproject.app.product.dto.PrProductDetails( " +
+            " min(prProduct.finalPrice), " +
+            " max(prProduct.finalPrice), " +
+            " avg(prProduct.finalPrice) , " +
+            " count(prProduct), " +
+            " prProductInfo.productType, " +
+            " prProductInfo.vatRate ) " +
+            " from PrProduct prProduct " +
+            " left join PrProductInfo prProductInfo on prProduct.productType = prProductInfo.productType " +
+            " where prProduct.productType = :productType ")
+    PrProductDetails getProductDetails(ProductType productType);
+ */
