@@ -7,7 +7,10 @@ import com.emrekara.finalproject.app.product.entity.PrProduct;
 import com.emrekara.finalproject.app.product.service.PrProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -26,7 +29,17 @@ public class PrProductController {
 
         PrProductDto prProductDto = prProductService.save(prProductSaveRequestDto);
 
-        return ResponseEntity.ok(RestResponse.of(prProductDto));
+        WebMvcLinkBuilder linkGet = WebMvcLinkBuilder.linkTo(
+                WebMvcLinkBuilder.methodOn(
+                        this.getClass()).findAll(prProductSaveRequestDto.getProductType()));
+
+        EntityModel entityModel = EntityModel.of(prProductDto);
+
+        entityModel.add(linkGet.withRel("Find-All-Product-By-Product-Type"));
+
+        MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(entityModel);
+
+        return ResponseEntity.ok(RestResponse.of(mappingJacksonValue));
     }
 
 
