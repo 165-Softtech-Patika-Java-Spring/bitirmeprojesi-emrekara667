@@ -5,6 +5,8 @@ import com.emrekara.finalproject.app.user.dao.UsUserDao;
 import com.emrekara.finalproject.app.user.entity.UsUser;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UsUserEntityService extends BaseEntityService<UsUser, UsUserDao> {
     public UsUserEntityService(UsUserDao dao) {
@@ -13,6 +15,10 @@ public class UsUserEntityService extends BaseEntityService<UsUser, UsUserDao> {
 
     public boolean existsUsUserByUserName(String userName){
         return getDao().existsUsUserByUserName(userName);
+    }
+
+    public Optional<UsUser> findByUserName(String userName){
+        return getDao().findByUserName(userName);
     }
 
 

@@ -44,7 +44,10 @@ public class UsUserController {
     public ResponseEntity delete(@PathVariable Long id){
         usUserService.delete(id);
 
-        return ResponseEntity.ok(RestResponse.empty());
+        RestResponse<Object> restResponse = RestResponse.empty();
+        restResponse.setMessages(" Id : " + id + " was deleted");
+
+        return ResponseEntity.ok(restResponse);
     }
 
     @Operation(tags = "User Controller", description = "Find all user", summary = "Find all user")

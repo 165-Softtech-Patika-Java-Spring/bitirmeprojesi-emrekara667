@@ -1,7 +1,7 @@
 package com.emrekara.finalproject.app.user.service;
 
+import com.emrekara.finalproject.app.gen.enums.BaseErrorMessage;
 import com.emrekara.finalproject.app.gen.exceptions.GenBusinessException;
-import com.emrekara.finalproject.app.gen.exceptions.ItemNotFoundException;
 import com.emrekara.finalproject.app.user.converter.UsUserMapper;
 import com.emrekara.finalproject.app.user.dto.UsUserDto;
 import com.emrekara.finalproject.app.user.dto.UsUserResponseDto;
@@ -11,6 +11,7 @@ import com.emrekara.finalproject.app.user.entity.UsUser;
 import com.emrekara.finalproject.app.user.enums.UsrErrorMessage;
 import com.emrekara.finalproject.app.user.service.entityservice.UsUserEntityService;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,21 +26,24 @@ public class UsUserService {
 
         UsUser usUser = UsUserMapper.INSTANCE.convertToUsUser(usUserSaveRequestDto);
 
-        boolean isExistByUserName = usUserEntityService.existsUsUserByUserName(usUser.getUserName());
+        validateUserName(usUser.getUserName());
 
-        if(!isExistByUserName){
-            usUser = usUserEntityService.save(usUser);
-        }else{
-           throw new GenBusinessException(UsrErrorMessage.USERNAME_ALREADY_EXIST_ERROR);
-        }
+        usUser = usUserEntityService.save(usUser);
+
         UsUserDto usUserDto = UsUserMapper.INSTANCE.convertToUsUserDto(usUser);
 
         return usUserDto;
     }
 
+    private void validateUserName(String userName) {
+        boolean isExistByUserName = usUserEntityService.existsUsUserByUserName(userName);
+
+        validateAttribute(isExistByUserName , UsrErrorMessage.USERNAME_ALREADY_EXIST_ERROR);
+    }
+
     public UsUserDto update(UsUserUpdateRequestDto usUserUpdateRequestDto) {
 
-        controlIsUserExist(usUserUpdateRequestDto);
+        updateParametersControl(usUserUpdateRequestDto);
 
         UsUser usUser = UsUserMapper.INSTANCE.convertToUsUser(usUserUpdateRequestDto);
 
@@ -51,15 +55,23 @@ public class UsUserService {
     }
 
     //Todo: username update should prevent
-    private void controlIsUserExist(UsUserUpdateRequestDto usUserUpdateRequestDto) {
+    private void updateParametersControl(UsUserUpdateRequestDto usUserUpdateRequestDto) {
 
+        UsUser usUser = getUsUserWithControl(usUserUpdateRequestDto);
+
+        String dtoUserName = usUserUpdateRequestDto.getUserName();
+
+        if(!usUser.getUserName().equals(dtoUserName)){
+            if(usUserEntityService.existsUsUserByUserName(dtoUserName)){
+                throw new GenBusinessException(UsrErrorMessage.USERNAME_ALREADY_EXIST_ERROR);
+            }
+        }
+    }
+
+    private UsUser getUsUserWithControl(@NotNull UsUserUpdateRequestDto usUserUpdateRequestDto) {
         Long id = usUserUpdateRequestDto.getId();
 
-        boolean isExist = usUserEntityService.existsById(id);
-        if(!isExist){
-            throw new ItemNotFoundException(UsrErrorMessage.USER_NOT_FOUND_ERROR);
-        }
-
+       return usUserEntityService.getByIdWithControl(id);
     }
 
     public void delete(Long id) {
@@ -75,5 +87,11 @@ public class UsUserService {
         List<UsUserResponseDto> usUserResponseDtoList = UsUserMapper.INSTANCE.convertToUsUserResponseDtoList(usUserList);
 
         return usUserResponseDtoList;
+    }
+
+    private void validateAttribute(boolean attribute, BaseErrorMessage baseErrorMessage) {
+        if(attribute){
+            throw new GenBusinessException(baseErrorMessage);
+        }
     }
 }
