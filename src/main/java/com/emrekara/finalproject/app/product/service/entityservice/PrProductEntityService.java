@@ -23,4 +23,20 @@ public class PrProductEntityService extends BaseEntityService<PrProduct, PrProdu
     public List<PrProduct> findAllByFinalPriceBetween(BigDecimal minimum, BigDecimal maximum){
         return getDao().findAllByFinalPriceBetween(minimum, maximum);
     }
+
+    public BigDecimal findMinPrice(ProductType productType){
+        return getDao().findMinPrice(productType);
+    }
+
+    public BigDecimal findMaxPrice(ProductType productType){
+        return getDao().findMaxPrice(productType);
+    }
+
+    public BigDecimal findAvgPrice(ProductType productType){
+        return getDao().findAvgPrice(productType);
+    }
+
+    public BigDecimal findCount(ProductType productType){
+        return getDao().findCount(productType);
+    }
 }

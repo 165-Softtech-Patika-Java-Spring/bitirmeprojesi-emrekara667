@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 @Service
@@ -186,5 +187,26 @@ public class PrProductService {
         List<PrProductDto> prProductDtoList = PrProductMapper.INSTANCE.convertToProductDtoList(prProductList);
 
         return prProductDtoList;
+    }
+
+
+
+    public PrProductDetailsDto findProductDetails(ProductType productType) {
+
+        BigDecimal minPrice = prProductEntityService.findMinPrice(productType);
+        BigDecimal maxPrice = prProductEntityService.findMaxPrice(productType);
+        BigDecimal avgPrice = prProductEntityService.findAvgPrice(productType);
+        BigDecimal count = prProductEntityService.findCount(productType);
+
+
+
+        PrProductDetailsDto prProductDetailsDto = new PrProductDetailsDto();
+        prProductDetailsDto.setMinimum(minPrice);
+        prProductDetailsDto.setAverage(avgPrice);
+        prProductDetailsDto.setMaximum(maxPrice);
+        prProductDetailsDto.setCount(count);
+
+
+        return prProductDetailsDto;
     }
 }

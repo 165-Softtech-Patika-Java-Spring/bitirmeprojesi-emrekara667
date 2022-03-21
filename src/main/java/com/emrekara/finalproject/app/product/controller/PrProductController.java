@@ -2,10 +2,7 @@ package com.emrekara.finalproject.app.product.controller;
 
 import com.emrekara.finalproject.app.gen.dto.RestResponse;
 import com.emrekara.finalproject.app.gen.enums.ProductType;
-import com.emrekara.finalproject.app.product.dto.PrProductDto;
-import com.emrekara.finalproject.app.product.dto.PrProductSaveRequestDto;
-import com.emrekara.finalproject.app.product.dto.PrProductUpdatePriceDto;
-import com.emrekara.finalproject.app.product.dto.PrProductUpdateRequestDto;
+import com.emrekara.finalproject.app.product.dto.*;
 import com.emrekara.finalproject.app.product.entity.PrProduct;
 import com.emrekara.finalproject.app.product.service.PrProductService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -89,6 +86,20 @@ public class PrProductController {
 
         return ResponseEntity.ok(RestResponse.of(productDtoList));
     }
+
+
+    @Operation(tags = "Product Controller", description = "Show details", summary = "Show details")
+    @GetMapping("/{productType}/details")
+    public ResponseEntity productDetails(@PathVariable ProductType productType){
+
+        PrProductDetailsDto prProductDetailsDto = prProductService.findProductDetails(productType);
+
+        return ResponseEntity.ok(RestResponse.of(prProductDetailsDto));
+    }
+
+
+
+
 
 
 
