@@ -36,12 +36,6 @@ public class UsUserService {
         return usUserDto;
     }
 
-    private void validateUserName(String userName) {
-        boolean isExistByUserName = usUserEntityService.existsUsUserByUserName(userName);
-
-        validateAttribute(isExistByUserName , UsrErrorMessage.USERNAME_ALREADY_EXIST_ERROR);
-    }
-
     public UsUserDto update(UsUserUpdateRequestDto usUserUpdateRequestDto) {
 
         updateParametersControl(usUserUpdateRequestDto);
@@ -55,6 +49,26 @@ public class UsUserService {
         return usUserDto;
     }
 
+    public void delete(Long id) {
+        UsUser usUser = usUserEntityService.getByIdWithControl(id);
+
+        usUserEntityService.delete(usUser);
+    }
+
+    public List<UsUserResponseDto> findAll() {
+
+        List<UsUser> usUserList = usUserEntityService.findAll();
+
+        List<UsUserResponseDto> usUserResponseDtoList = UsUserMapper.INSTANCE.convertToUsUserResponseDtoList(usUserList);
+
+        return usUserResponseDtoList;
+    }
+
+    private void validateUserName(String userName) {
+        boolean isExistByUserName = usUserEntityService.existsUsUserByUserName(userName);
+
+        validateAttribute(isExistByUserName , UsrErrorMessage.USERNAME_ALREADY_EXIST_ERROR);
+    }
 
     private void updateParametersControl(UsUserUpdateRequestDto usUserUpdateRequestDto) {
 
@@ -73,21 +87,6 @@ public class UsUserService {
         Long id = usUserUpdateRequestDto.getId();
 
        return usUserEntityService.getByIdWithControl(id);
-    }
-
-    public void delete(Long id) {
-       UsUser usUser = usUserEntityService.getByIdWithControl(id);
-
-       usUserEntityService.delete(usUser);
-    }
-
-    public List<UsUserResponseDto> findAll() {
-
-        List<UsUser> usUserList = usUserEntityService.findAll();
-
-        List<UsUserResponseDto> usUserResponseDtoList = UsUserMapper.INSTANCE.convertToUsUserResponseDtoList(usUserList);
-
-        return usUserResponseDtoList;
     }
 
     private void validateAttribute(boolean attribute, BaseErrorMessage baseErrorMessage) {

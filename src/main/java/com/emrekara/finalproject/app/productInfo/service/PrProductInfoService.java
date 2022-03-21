@@ -44,23 +44,18 @@ public class PrProductInfoService {
         return prProductInfoDto;
     }
 
-    private void validateProductTypeisExist(PrProductInfo prProductInfo) {
-        boolean isExist = prProductInfoEntityService.existsPrProductInfoByProductType(prProductInfo.getProductType());
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    public void setVatRateTransactional(PrProductInfoUpdateRequestDto prProductInfoUpdateRequestDto) {
+        BigDecimal vatRate = prProductInfoUpdateRequestDto.getVatRate();
+        ProductType productType = prProductInfoUpdateRequestDto.getProductType();
 
-        validateProductInfoAttribute(isExist,PrProductInfoErrorMessage.PRODUCT_TYPE_ALREADY_EXIST_ERROR);
-    }
+        validateProductTypeisNotExist(productType);
 
-    private void validateProductInfoAttribute(boolean productInfoAttribute, PrProductInfoErrorMessage errorMessage) {
-        if(productInfoAttribute){
-            throw new BadRequestExceptions(errorMessage);
-        }
-    }
+        PrProductInfo prProductInfo = prProductInfoEntityService.findByProductType(productType);
 
+        prProductInfo.setVatRate(vatRate);
 
-    private void validateVatRate(BigDecimal vatRate) {
-        if(vatRate.compareTo(BigDecimal.ZERO) < 0){
-            throw new BadRequestExceptions(PrProductInfoErrorMessage.NEGATIVE_VAT_RATE_ERROR);
-        }
+        prProductInfoEntityService.save(prProductInfo);
     }
 
     public List<PrProductInfoDto> findAll() {
@@ -86,6 +81,24 @@ public class PrProductInfoService {
         return prProductInfoDto;
     }
 
+    private void validateProductTypeisExist(PrProductInfo prProductInfo) {
+        boolean isExist = prProductInfoEntityService.existsPrProductInfoByProductType(prProductInfo.getProductType());
+
+        validateProductInfoAttribute(isExist,PrProductInfoErrorMessage.PRODUCT_TYPE_ALREADY_EXIST_ERROR);
+    }
+
+    private void validateProductInfoAttribute(boolean productInfoAttribute, PrProductInfoErrorMessage errorMessage) {
+        if(productInfoAttribute){
+            throw new BadRequestExceptions(errorMessage);
+        }
+    }
+
+    private void validateVatRate(BigDecimal vatRate) {
+        if(vatRate.compareTo(BigDecimal.ZERO) < 0){
+            throw new BadRequestExceptions(PrProductInfoErrorMessage.NEGATIVE_VAT_RATE_ERROR);
+        }
+    }
+
     private void updateAllProductPriceByProductType(ProductType productType) {
 
         List<PrProductDto> productDtoList = prProductService.findAllByProduct(productType);
@@ -96,20 +109,6 @@ public class PrProductInfoService {
         for(PrProductUpdatePriceDto tempDto: prProductUpdatePriceDtoList){
             prProductService.updatePrice(tempDto);
         }
-    }
-
-    @Transactional(Transactional.TxType.REQUIRES_NEW)
-    public void setVatRateTransactional(PrProductInfoUpdateRequestDto prProductInfoUpdateRequestDto) {
-        BigDecimal vatRate = prProductInfoUpdateRequestDto.getVatRate();
-        ProductType productType = prProductInfoUpdateRequestDto.getProductType();
-
-        validateProductTypeisNotExist(productType);
-
-        PrProductInfo prProductInfo = prProductInfoEntityService.findByProductType(productType);
-
-        prProductInfo.setVatRate(vatRate);
-
-        prProductInfoEntityService.save(prProductInfo);
     }
 
     private void validateProductTypeisNotExist(ProductType productType) {
