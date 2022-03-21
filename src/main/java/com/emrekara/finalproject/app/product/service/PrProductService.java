@@ -2,6 +2,7 @@ package com.emrekara.finalproject.app.product.service;
 
 import com.emrekara.finalproject.app.gen.enums.GenErrorMessage;
 import com.emrekara.finalproject.app.gen.enums.ProductType;
+import com.emrekara.finalproject.app.gen.exceptions.BadRequestExceptions;
 import com.emrekara.finalproject.app.gen.exceptions.GenBusinessException;
 import com.emrekara.finalproject.app.product.converter.PrProductMapper;
 import com.emrekara.finalproject.app.product.dto.*;
@@ -56,7 +57,7 @@ public class PrProductService {
 
     private void validateProductAttribute(boolean productAttribute, ProductErrorMessage productNameEmptyError) {
         if(productAttribute){
-            throw new GenBusinessException(productNameEmptyError);
+            throw new BadRequestExceptions(productNameEmptyError);
         }
     }
 

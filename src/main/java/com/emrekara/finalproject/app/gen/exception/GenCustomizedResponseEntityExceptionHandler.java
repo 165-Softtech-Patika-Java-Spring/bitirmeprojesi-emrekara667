@@ -1,6 +1,7 @@
 package com.emrekara.finalproject.app.gen.exception;
 
 import com.emrekara.finalproject.app.gen.dto.RestResponse;
+import com.emrekara.finalproject.app.gen.exceptions.BadRequestExceptions;
 import com.emrekara.finalproject.app.gen.exceptions.GenBusinessException;
 import com.emrekara.finalproject.app.gen.exceptions.ItemNotFoundException;
 import org.springframework.http.HttpHeaders;
@@ -77,4 +78,21 @@ public class GenCustomizedResponseEntityExceptionHandler extends ResponseEntityE
 
         return new ResponseEntity<>(restResponse, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleAllBadRequestExceptions(BadRequestExceptions ex, WebRequest webRequest){
+
+        Date errorDate = new Date();
+        String message = ex.getMessage();
+        String description = webRequest.getDescription(false);
+
+        GenExceptionResponse genExceptionResponse = new GenExceptionResponse(errorDate, message, description);
+
+        RestResponse<GenExceptionResponse> restResponse = RestResponse.error(genExceptionResponse);
+        restResponse.setMessages(message);
+
+        return new ResponseEntity<>(restResponse, HttpStatus.BAD_REQUEST);
+    }
+
+
 }

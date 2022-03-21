@@ -1,6 +1,7 @@
 package com.emrekara.finalproject.app.user.service;
 
 import com.emrekara.finalproject.app.gen.enums.BaseErrorMessage;
+import com.emrekara.finalproject.app.gen.exceptions.BadRequestExceptions;
 import com.emrekara.finalproject.app.gen.exceptions.GenBusinessException;
 import com.emrekara.finalproject.app.user.converter.UsUserMapper;
 import com.emrekara.finalproject.app.user.dto.UsUserDto;
@@ -54,7 +55,7 @@ public class UsUserService {
         return usUserDto;
     }
 
-    //Todo: username update should prevent
+
     private void updateParametersControl(UsUserUpdateRequestDto usUserUpdateRequestDto) {
 
         UsUser usUser = getUsUserWithControl(usUserUpdateRequestDto);
@@ -63,7 +64,7 @@ public class UsUserService {
 
         if(!usUser.getUserName().equals(dtoUserName)){
             if(usUserEntityService.existsUsUserByUserName(dtoUserName)){
-                throw new GenBusinessException(UsrErrorMessage.USERNAME_ALREADY_EXIST_ERROR);
+                throw new BadRequestExceptions(UsrErrorMessage.USERNAME_ALREADY_EXIST_ERROR);
             }
         }
     }
@@ -91,7 +92,7 @@ public class UsUserService {
 
     private void validateAttribute(boolean attribute, BaseErrorMessage baseErrorMessage) {
         if(attribute){
-            throw new GenBusinessException(baseErrorMessage);
+            throw new BadRequestExceptions(baseErrorMessage);
         }
     }
 }

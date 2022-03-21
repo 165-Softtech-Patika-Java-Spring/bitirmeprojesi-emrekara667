@@ -1,6 +1,7 @@
 package com.emrekara.finalproject.app.productInfo.service;
 
 import com.emrekara.finalproject.app.gen.enums.ProductType;
+import com.emrekara.finalproject.app.gen.exceptions.BadRequestExceptions;
 import com.emrekara.finalproject.app.gen.exceptions.GenBusinessException;
 import com.emrekara.finalproject.app.product.converter.PrProductMapper;
 import com.emrekara.finalproject.app.product.dto.PrProductDto;
@@ -51,14 +52,14 @@ public class PrProductInfoService {
 
     private void validateProductInfoAttribute(boolean productInfoAttribute, PrProductInfoErrorMessage errorMessage) {
         if(productInfoAttribute){
-            throw new GenBusinessException(errorMessage);
+            throw new BadRequestExceptions(errorMessage);
         }
     }
 
 
     private void validateVatRate(BigDecimal vatRate) {
         if(vatRate.compareTo(BigDecimal.ZERO) < 0){
-            throw new GenBusinessException(PrProductInfoErrorMessage.NEGATIVE_VAT_RATE_ERROR);
+            throw new BadRequestExceptions(PrProductInfoErrorMessage.NEGATIVE_VAT_RATE_ERROR);
         }
     }
 
@@ -114,6 +115,8 @@ public class PrProductInfoService {
     private void validateProductTypeisNotExist(ProductType productType) {
         boolean isExist = prProductInfoEntityService.existsPrProductInfoByProductType(productType);
 
-        validateProductInfoAttribute(!isExist,PrProductInfoErrorMessage.PRODUCT_TYPE_NOT_FOUND_ERROR);
+        if(!isExist){
+            throw new GenBusinessException(PrProductInfoErrorMessage.PRODUCT_TYPE_NOT_FOUND_ERROR);
+        }
     }
 }
