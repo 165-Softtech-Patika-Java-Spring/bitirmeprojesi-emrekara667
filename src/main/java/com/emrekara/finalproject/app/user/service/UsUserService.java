@@ -48,6 +48,10 @@ public class UsUserService {
 
         UsUser usUser = UsUserMapper.INSTANCE.convertToUsUser(usUserUpdateRequestDto);
 
+        String password = passwordEncoder.encode(usUser.getPassword());
+        usUser.setPassword(password);
+
+
         usUserEntityService.save(usUser);
 
         UsUserDto usUserDto = UsUserMapper.INSTANCE.convertToUsUserDto(usUser);
