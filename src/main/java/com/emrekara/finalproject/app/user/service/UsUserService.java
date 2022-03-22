@@ -13,21 +13,27 @@ import com.emrekara.finalproject.app.user.enums.UsrErrorMessage;
 import com.emrekara.finalproject.app.user.service.entityservice.UsUserEntityService;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UsUserService {
 
     private final UsUserEntityService usUserEntityService;
+    private final PasswordEncoder passwordEncoder;
 
     public UsUserDto save(UsUserSaveRequestDto usUserSaveRequestDto) {
 
         UsUser usUser = UsUserMapper.INSTANCE.convertToUsUser(usUserSaveRequestDto);
 
         validateUserName(usUser.getUserName());
+
+        String password = passwordEncoder.encode(usUser.getPassword());
+        usUser.setPassword(password);
 
         usUser = usUserEntityService.save(usUser);
 
@@ -63,6 +69,7 @@ public class UsUserService {
 
         return usUserResponseDtoList;
     }
+
 
     private void validateUserName(String userName) {
         boolean isExistByUserName = usUserEntityService.existsUsUserByUserName(userName);

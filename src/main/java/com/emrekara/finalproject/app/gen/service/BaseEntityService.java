@@ -4,7 +4,10 @@ import com.emrekara.finalproject.app.gen.entity.BaseAdditionalFields;
 import com.emrekara.finalproject.app.gen.entity.BaseEntity;
 import com.emrekara.finalproject.app.gen.enums.GenErrorMessage;
 import com.emrekara.finalproject.app.gen.exceptions.ItemNotFoundException;
+import com.emrekara.finalproject.app.sec.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,14 @@ import java.util.Optional;
 public abstract class BaseEntityService<E extends BaseEntity, D extends JpaRepository<E, Long>> {
 
     private final D dao;
+
+    private AuthenticationService authenticationService;
+
+    /** Circular dependency*/
+    @Autowired
+    public void setAuthenticationService(@Lazy AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+    }
 
     public List<E> findAll(){
         return dao.findAll();
@@ -90,7 +101,7 @@ public abstract class BaseEntityService<E extends BaseEntity, D extends JpaRepos
 
     //TODO: control after jwt
     private Long getCurrentCustomerId() {
-        Long currentCustomer = null;
+        Long currentCustomer = authenticationService.getCurrentCustomerId();
         return currentCustomer;
     }
 }
