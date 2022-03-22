@@ -99,7 +99,7 @@ public abstract class BaseEntityService<E extends BaseEntity, D extends JpaRepos
         return dao;
     }
 
-    //TODO: control after jwt
+
     private Long getCurrentCustomerId() {
         Long currentCustomer = authenticationService.getCurrentCustomerId();
         return currentCustomer;

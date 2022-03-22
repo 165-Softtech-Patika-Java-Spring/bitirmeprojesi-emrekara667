@@ -5,6 +5,7 @@ import com.emrekara.finalproject.app.sec.dto.SecLoginRequestDto;
 import com.emrekara.finalproject.app.sec.service.AuthenticationService;
 import com.emrekara.finalproject.app.user.dto.UsUserDto;
 import com.emrekara.finalproject.app.user.dto.UsUserSaveRequestDto;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
+    @Operation(tags = "Security Controller", description = "Login user", summary = "Login user")
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody SecLoginRequestDto secLoginRequestDto){
 
@@ -27,6 +29,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(RestResponse.of(token));
     }
 
+    @Operation(tags = "Security Controller", description = "Sign in new user", summary = "Sign in new user")
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody UsUserSaveRequestDto usUserSaveRequestDto){
 
