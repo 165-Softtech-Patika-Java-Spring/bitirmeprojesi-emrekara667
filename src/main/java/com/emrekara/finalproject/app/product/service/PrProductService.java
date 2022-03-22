@@ -14,12 +14,14 @@ import com.emrekara.finalproject.app.productInfo.service.entityservice.PrProduct
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PrProductService {
 
     private final PrProductEntityService prProductEntityService;
@@ -132,6 +134,7 @@ public class PrProductService {
 
         ProductType productType = prProductSaveRequestDto.getProductType();
         validateProductAttribute(productType == null, ProductErrorMessage.PRODUCT_TYPE_EMPTY_ERROR);
+        prProductInfoEntityService.validateProductTypeExist(productType);
 
         BigDecimal vatFreePrice = prProductSaveRequestDto.getVatFreePrice();
         validateVatFreePrice(vatFreePrice);

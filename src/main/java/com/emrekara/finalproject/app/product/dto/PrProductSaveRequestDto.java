@@ -10,9 +10,12 @@ import java.math.BigDecimal;
 public class PrProductSaveRequestDto {
 
 
+    @NotNull(message = "Cannot be null")
     private String productName;
 
+    @NotNull
     private ProductType productType;
 
+    @NotNull
     private BigDecimal vatFreePrice;
 }

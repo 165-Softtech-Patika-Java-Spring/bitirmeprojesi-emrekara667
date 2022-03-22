@@ -23,6 +23,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PrProductInfoService {
 
     private final PrProductInfoEntityService prProductInfoEntityService;
@@ -68,7 +69,7 @@ public class PrProductInfoService {
         return prProductInfoDto;
     }
 
-    @Transactional(Transactional.TxType.REQUIRES_NEW)
+
     public void setVatRateTransactional(PrProductInfoUpdateRequestDto prProductInfoUpdateRequestDto) {
         BigDecimal vatRate = prProductInfoUpdateRequestDto.getVatRate();
         ProductType productType = prProductInfoUpdateRequestDto.getProductType();
