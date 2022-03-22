@@ -28,6 +28,16 @@ public class PrProductInfoService {
     private final PrProductInfoEntityService prProductInfoEntityService;
     private final PrProductService prProductService;
 
+
+    public List<PrProductInfoDto> findAll() {
+        List<PrProductInfo> prProductInfoList = prProductInfoEntityService.findAll();
+
+        List<PrProductInfoDto> prProductInfoDtoList = PrProductInfoMapper.INSTANCE.
+                convertToPrProductInfoDtoList(prProductInfoList);
+
+        return prProductInfoDtoList;
+    }
+
     public PrProductInfoDto save(PrProductInfoSaveRequestDto prProductInfoSaveRequestDto) {
 
         PrProductInfo prProductInfo = PrProductInfoMapper.INSTANCE.convertToPrProductInfo(prProductInfoSaveRequestDto);
@@ -38,6 +48,20 @@ public class PrProductInfoService {
         validateProductTypeisExist(prProductInfo);
 
         prProductInfo = prProductInfoEntityService.save(prProductInfo);
+
+        PrProductInfoDto prProductInfoDto = PrProductInfoMapper.INSTANCE.convertToPrProductInfoDto(prProductInfo);
+
+        return prProductInfoDto;
+    }
+
+    public PrProductInfoDto updateVatRate(PrProductInfoUpdateRequestDto prProductInfoUpdateRequestDto) {
+
+        setVatRateTransactional(prProductInfoUpdateRequestDto);
+        ProductType productType = prProductInfoUpdateRequestDto.getProductType();
+
+        updateAllProductPriceByProductType(productType);
+
+        PrProductInfo prProductInfo = prProductInfoEntityService.findByProductType(productType);
 
         PrProductInfoDto prProductInfoDto = PrProductInfoMapper.INSTANCE.convertToPrProductInfoDto(prProductInfo);
 
@@ -56,29 +80,6 @@ public class PrProductInfoService {
         prProductInfo.setVatRate(vatRate);
 
         prProductInfoEntityService.save(prProductInfo);
-    }
-
-    public List<PrProductInfoDto> findAll() {
-        List<PrProductInfo> prProductInfoList = prProductInfoEntityService.findAll();
-
-        List<PrProductInfoDto> prProductInfoDtoList = PrProductInfoMapper.INSTANCE.
-                convertToPrProductInfoDtoList(prProductInfoList);
-
-        return prProductInfoDtoList;
-    }
-
-    public PrProductInfoDto updateVatRate(PrProductInfoUpdateRequestDto prProductInfoUpdateRequestDto) {
-
-        setVatRateTransactional(prProductInfoUpdateRequestDto);
-        ProductType productType = prProductInfoUpdateRequestDto.getProductType();
-
-        updateAllProductPriceByProductType(productType);
-
-        PrProductInfo prProductInfo = prProductInfoEntityService.findByProductType(productType);
-
-        PrProductInfoDto prProductInfoDto = PrProductInfoMapper.INSTANCE.convertToPrProductInfoDto(prProductInfo);
-
-        return prProductInfoDto;
     }
 
     private void validateProductTypeisExist(PrProductInfo prProductInfo) {
