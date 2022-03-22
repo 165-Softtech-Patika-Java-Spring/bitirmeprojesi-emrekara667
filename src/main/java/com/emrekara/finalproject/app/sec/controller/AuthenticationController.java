@@ -6,6 +6,9 @@ import com.emrekara.finalproject.app.sec.service.AuthenticationService;
 import com.emrekara.finalproject.app.user.dto.UsUserDto;
 import com.emrekara.finalproject.app.user.dto.UsUserSaveRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +32,34 @@ public class AuthenticationController {
         return ResponseEntity.ok(RestResponse.of(token));
     }
 
-    @Operation(tags = "Security Controller", description = "Sign in new user", summary = "Sign in new user")
+    @Operation(tags = "Security Controller",
+            description = "Sign in new user",
+            summary = "Sign in new user",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Customers",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(
+                                            implementation = UsUserSaveRequestDto.class
+                                    ),
+                                    examples = {
+                                            @ExampleObject(
+                                                    name = "New User",
+                                                    summary = "New User Example",
+                                                    description = "Complete request with all available fields for new user",
+                                                    value = "{\n" +
+                                                            "  \"name\": \"emre\",\n" +
+                                                            "  \"surname\": \"kara\",\n" +
+                                                            "  \"password\": \"12345\",\n" +
+                                                            "  \"userName\": \"emre_kara\"\n" +
+                                                            "}"
+                                            )
+                                    }
+                            ),
+                    }
+            )
+    )
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody UsUserSaveRequestDto usUserSaveRequestDto){
 
