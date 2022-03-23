@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class PrProductController {
 
     @Operation(tags = "Product Controller", description = "Save new product", summary = "Save new product")
     @PostMapping
-    public ResponseEntity save(@RequestBody PrProductSaveRequestDto prProductSaveRequestDto){
+    public ResponseEntity save(@Valid @RequestBody PrProductSaveRequestDto prProductSaveRequestDto){
 
         PrProductDto prProductDto = prProductService.save(prProductSaveRequestDto);
 

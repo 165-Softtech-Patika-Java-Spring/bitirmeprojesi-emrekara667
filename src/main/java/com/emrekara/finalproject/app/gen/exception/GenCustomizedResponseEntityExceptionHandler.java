@@ -69,7 +69,7 @@ public class GenCustomizedResponseEntityExceptionHandler extends ResponseEntityE
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
         Date errorDate = new Date();
-        String message = "Validation failed!";
+        String message = ex.getMessage();
         String description = ex.getBindingResult().toString();
 
         GenExceptionResponse genExceptionResponse = new GenExceptionResponse(errorDate, message, description);
@@ -93,6 +93,8 @@ public class GenCustomizedResponseEntityExceptionHandler extends ResponseEntityE
 
         return new ResponseEntity<>(restResponse, HttpStatus.BAD_REQUEST);
     }
+
+
 
 
 }

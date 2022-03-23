@@ -13,9 +13,9 @@ public class PrProductSaveRequestDto {
     @NotNull(message = "Cannot be null")
     private String productName;
 
-    @NotNull
+    @NotNull(message = "Cannot be null")
     private ProductType productType;
 
-    @NotNull
+    @NotNull(message = "Cannot be null")
     private BigDecimal vatFreePrice;
 }
