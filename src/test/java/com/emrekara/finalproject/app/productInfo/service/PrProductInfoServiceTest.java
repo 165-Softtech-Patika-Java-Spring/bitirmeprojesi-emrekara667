@@ -115,6 +115,8 @@ class PrProductInfoServiceTest {
 
         PrProductInfoUpdateRequestDto prProductInfoUpdateRequestDto = mock(PrProductInfoUpdateRequestDto.class);
 
+        when(prProductInfoUpdateRequestDto.getVatRate()).thenReturn(BigDecimal.ONE);
+
         doNothing().when(prProductInfoService).setVatRateTransactional(prProductInfoUpdateRequestDto);
 
         when(prProductInfoUpdateRequestDto.getProductType()).thenReturn(ProductType.FOOD);

@@ -58,6 +58,8 @@ public class PrProductInfoService {
 
     public PrProductInfoDto updateVatRate(PrProductInfoUpdateRequestDto prProductInfoUpdateRequestDto) {
 
+        validateVatRate(prProductInfoUpdateRequestDto.getVatRate());
+
         setVatRateTransactional(prProductInfoUpdateRequestDto);
         ProductType productType = prProductInfoUpdateRequestDto.getProductType();
 
