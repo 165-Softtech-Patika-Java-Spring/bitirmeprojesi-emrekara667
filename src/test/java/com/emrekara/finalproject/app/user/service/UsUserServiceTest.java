@@ -57,6 +57,21 @@ class UsUserServiceTest {
         assertEquals(1L, result.getId());
     }
 
+    /*
+    @Test
+    void shouldNotSaveWhenUserExist() {
+
+        UsUserSaveRequestDto usUserSaveRequestDto = mock(UsUserSaveRequestDto.class);
+        UsUser usUser = mock(UsUser.class);
+
+        when(usUser.getUserName()).thenReturn(anyString());
+
+        when(usUserEntityService.existsUsUserByUserName(anyString())).thenReturn(true);
+
+        assertThrows(BadRequestExceptions.class, ()-> usUserService.save(usUserSaveRequestDto));
+    }
+
+*/
 
     @Test
     void shouldUpdateWhenUserNameSame() {
