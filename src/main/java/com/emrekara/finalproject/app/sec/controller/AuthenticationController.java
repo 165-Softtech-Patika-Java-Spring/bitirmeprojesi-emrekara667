@@ -23,7 +23,33 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
-    @Operation(tags = "Security Controller", description = "Login user", summary = "Login user")
+    @Operation(tags = "Security Controller",
+            description = "Login user",
+            summary = "Login user",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Customers",
+                    content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(
+                                            implementation = SecLoginRequestDto.class
+                                    ),
+                                    examples = {
+                                            @ExampleObject(
+                                                    name = "User login",
+                                                    summary = "User login Example",
+                                                    description = "Complete request with all available fields for login",
+                                                    value = "{\n" +
+                                                            "  \"userName\": \"emre_kara\",\n" +
+                                                            "  \"password\": \"12345\"\n" +
+                                                            "}"
+                                            )
+                                    }
+                            ),
+                    }
+            )
+
+    )
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody SecLoginRequestDto secLoginRequestDto){
 

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -21,10 +22,10 @@ public class UsUserController {
     private final UsUserService usUserService;
 
 
-    // Todo : add hateoas and  swagger model
+
     @Operation(tags = "User Controller", description = "Save new User", summary = "Register new user")
     @PostMapping
-    public ResponseEntity save(@RequestBody UsUserSaveRequestDto usUserSaveRequestDto){
+    public ResponseEntity save(@Valid @RequestBody UsUserSaveRequestDto usUserSaveRequestDto){
 
         UsUserDto usUserDto = usUserService.save(usUserSaveRequestDto);
 
