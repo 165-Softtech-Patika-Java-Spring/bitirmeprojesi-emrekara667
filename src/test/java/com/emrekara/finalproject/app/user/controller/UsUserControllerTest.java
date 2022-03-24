@@ -48,7 +48,7 @@ class UsUserControllerTest extends BaseTest {
         UsUserSaveRequestDto usUserSaveRequestDto = UsUserSaveRequestDto.builder()
                 .name("test")
                 .password("12345")
-                .userName("test_test")
+                .userName("test_test_1")
                 .surname("test")
                 .build();
 
@@ -69,9 +69,9 @@ class UsUserControllerTest extends BaseTest {
         UsUserUpdateRequestDto usUserUpdateRequestDto = UsUserUpdateRequestDto.builder()
                 .name("test")
                 .surname("test")
-                .userName("test_test")
+                .userName("test_test_1")
                 .password("12345")
-                .id(1102L)
+                .id(1202L)
                 .build();
 
         String content = objectMapper.writeValueAsString(usUserUpdateRequestDto);
@@ -90,7 +90,7 @@ class UsUserControllerTest extends BaseTest {
     void deleteTest() throws Exception {
 
         MvcResult result = mockMvc.perform(
-                delete(BASE_PATH + "/1152").content("1152").contentType(MediaType.APPLICATION_JSON)
+                delete(BASE_PATH + "/1202").content("1202").contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk()).andReturn();
 
         boolean isSuccess = isSuccess(result);
@@ -108,10 +108,6 @@ class UsUserControllerTest extends BaseTest {
 
         assertFalse(isSuccess);
     }
-
-
-
-
 
     @Test
     void findAll() throws Exception {
