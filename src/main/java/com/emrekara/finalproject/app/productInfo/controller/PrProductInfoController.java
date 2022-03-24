@@ -38,7 +38,9 @@ public class PrProductInfoController {
         return ResponseEntity.ok(RestResponse.of(prProductInfoDtoList));
     }
 
-    @Operation(tags = "ProductInfo Controller", description = "Update vatRate", summary = "Update vatRate")
+    @Operation(tags = "ProductInfo Controller",
+            description = "Update vatRate : FOOD - STATIONARY - CLOTHES - TECHNOLOGY - CLEANING -OTHER - DUMMY",
+            summary = "Update vatRate")
     @PostMapping("/update-vatRate")
     public ResponseEntity updateVatRate(@RequestBody PrProductInfoUpdateRequestDto prProductInfoUpdateRequestDto){
         PrProductInfoDto prProductInfoDto = prProductInfoService.updateVatRate(prProductInfoUpdateRequestDto);

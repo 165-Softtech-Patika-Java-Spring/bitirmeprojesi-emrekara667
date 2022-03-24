@@ -24,7 +24,9 @@ public class PrProductController {
 
     private final PrProductService prProductService;
 
-    @Operation(tags = "Product Controller", description = "Save new product", summary = "Save new product")
+    @Operation(tags = "Product Controller",
+            description = "Save new product : FOOD - STATIONARY - CLOTHES - TECHNOLOGY - CLEANING -OTHER - DUMMY",
+            summary = "Save new product")
     @PostMapping
     public ResponseEntity save(@Valid @RequestBody PrProductSaveRequestDto prProductSaveRequestDto){
 

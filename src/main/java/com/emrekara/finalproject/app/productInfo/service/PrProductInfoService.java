@@ -28,6 +28,7 @@ public class PrProductInfoService {
 
     private final PrProductInfoEntityService prProductInfoEntityService;
     private final PrProductService prProductService;
+    private final PrProductInfoServiceTransactionalReqNew prProductInfoServiceTransactionalReqNew;
 
 
     public List<PrProductInfoDto> findAll() {
@@ -80,7 +81,9 @@ public class PrProductInfoService {
 
         prProductInfo.setVatRate(vatRate);
 
-        prProductInfoEntityService.save(prProductInfo);
+        prProductInfoServiceTransactionalReqNew.saveProductInfoEntity(prProductInfo);
+
+        //prProductInfoEntityService.save(prProductInfo);
     }
 
     private void validateProductTypeisExist(PrProductInfo prProductInfo) {
