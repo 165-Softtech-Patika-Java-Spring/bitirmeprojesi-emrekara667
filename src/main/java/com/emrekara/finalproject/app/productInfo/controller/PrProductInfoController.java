@@ -22,7 +22,7 @@ public class PrProductInfoController {
     @Operation(tags = "ProductInfo Controller",
             description = "Save new product vatRate and product name",
             summary = "Save new product information")
-    @PostMapping
+    //@PostMapping
     public ResponseEntity save(@RequestBody PrProductInfoSaveRequestDto prProductInfoSaveRequestDto){
 
         PrProductInfoDto prProductInfoDto = prProductInfoService.save(prProductInfoSaveRequestDto);
