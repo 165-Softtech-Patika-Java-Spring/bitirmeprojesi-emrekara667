@@ -58,22 +58,4 @@ class PrProductInfoControllerTest extends BaseTest {
 
     }
 
-    @Test
-    void updateVatRate() throws Exception {
-
-        PrProductInfoUpdateRequestDto prProductInfoUpdateRequestDto = PrProductInfoUpdateRequestDto.builder()
-                .productType(ProductType.CLEANING)
-                .vatRate(BigDecimal.ONE)
-                .build();
-
-        String content = objectMapper.writeValueAsString(prProductInfoUpdateRequestDto);
-
-        MvcResult result = mockMvc.perform(
-                post(BASE_PATH + "/update-vatRate").content(content).contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk()).andReturn();
-
-        boolean isSuccess = isSuccess(result);
-
-        assertTrue(isSuccess);
-    }
 }
