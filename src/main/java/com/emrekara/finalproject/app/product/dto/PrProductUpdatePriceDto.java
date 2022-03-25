@@ -1,5 +1,6 @@
 package com.emrekara.finalproject.app.product.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
