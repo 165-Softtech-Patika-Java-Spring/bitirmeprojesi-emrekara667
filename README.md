@@ -4,6 +4,27 @@ Projenin Konusu:
 Bir marketteki ürünlerin satış fiyatlarına göre son fiyatlarını belirleyen servisin Spring Boot Framework
 kullanılarak yazılması ve isteğe bağlı olarak önyüzünün yazılması.
 
+
+>KURULUM:
+
+- Proje başladığında KDV oranları otomatik olarak veritabanına kaydedilir.
+- Kullanıcı kaydı yapıldıktan sonra giriş yapılarak 
+- Kullanıcı islemleri, ürün işlemleri , ve KDV işlemleri yapılabilir
+
+>server.port=8088
+
+### Product Controller
+<img src="images/product-controller.PNG" width="1000">
+
+### Product Info Controller
+<img src="images/product-info-controller.PNG" width="1000">
+
+### Security Controller
+<img src="images/security-controller.PNG" width="1000">
+
+### User Controller
+<img src="images/user-controller.PNG" width="1000">
+
 > **Gereksinimler:**
 
 > **Backend:**
