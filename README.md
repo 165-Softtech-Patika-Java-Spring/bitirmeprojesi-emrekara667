@@ -1,5 +1,18 @@
 # Bitirme Projesi
 
+# Softtech Assignment
+
+> **Projede Kullanılan Teknolojiler:**
+* Unit test
+* Integration test
+* Jwt
+* Hateoas
+* H2
+* Mapstruct
+* Lombock
+* Spring boot
+* Hibernate
+
 Projenin Konusu:
 Bir marketteki ürünlerin satış fiyatlarına göre son fiyatlarını belirleyen servisin Spring Boot Framework
 kullanılarak yazılması ve isteğe bağlı olarak önyüzünün yazılması.
